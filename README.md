@@ -2,4 +2,4 @@
 
 Live link : https://msib-capstone.vercel.app/
 
-Saya ucapkan terimakasih kepada seluruh Lecture dan Mentor (Airell Jordan) dan rekan Hacktiv8 telah membimbing dalam proses pembuatan project capstone ini. 
+Saya ucapkan terimakasih kepada seluruh Lecture, Mentor (Airell Jordan) dan rekan Hacktiv8 telah membimbing dalam proses pembuatan project capstone ini. 
