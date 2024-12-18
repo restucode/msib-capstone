@@ -1,19 +1,25 @@
 import styles from "./CommonPageLayout.module.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Navbar } from "../components";
 import { useParams } from "react-router-dom";
-
-
+import { fetchNews } from "../store/actions";
 function DetailPage() {
   const newsReducer = useSelector((state) => state.news);
-  const { id } = useParams()
+  const { id} = useParams()
+
+  const dispatch = useDispatch();
 
   let keywordToTitle = id.split("-").join(" ")
   const filterNewsReducer = newsReducer.filter((val) => val.headline.main.split(" ").join("-").includes(id))
 
+    const performSearch = (searchQuery) => {
+      // setHeaderTitle(searchQuery)
+      dispatch(fetchNews({ q: searchQuery }));
+    };
+
   return (
     <main>
-      <Navbar />
+      <Navbar performSearch={performSearch} />
       <section className={styles.pageContainer}>
         <section>
           <h1 className={styles.detailH1}>{ keywordToTitle }</h1>

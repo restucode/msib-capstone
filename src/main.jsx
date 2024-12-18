@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import { Provider } from "react-redux";
 import store from "./store/index";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 import ErrorPage from "./error-page";
 import HomePage from "./pages/HomePage";
 import ProgammingPage from "./pages/ProgrammingPage";
@@ -63,6 +63,11 @@ const router = createBrowserRouter([
     element: <DetailPage />,
     errorElement: <ErrorPage />,
   },
+  {
+    path: "/search",
+    element: <Navigate to="/" />
+  }
+  
 ]);
 
 createRoot(document.getElementById('root')).render(

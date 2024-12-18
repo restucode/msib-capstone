@@ -1,21 +1,34 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useLocation  } from "react-router-dom";
 import './Navbar.css'
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
 
 
 function Navbar(props) {
   const navigate = useNavigate()
+  const location = useLocation();
   const [search, setSearch] = useState('')
   const [navToggle, setNavToggle] = useState(false)
+  const [isOnSearchPage, setIsOnSearchPage] = useState(false);
 
   const handleInputChange = (e) => {
     setSearch(e.target.value)
   }
 
   const handleOnClick = (e) => {
-    navigate(`/search/${search}`)
-    setNavToggle(false)
+    if (isOnSearchPage) {
+      props.performSearch(search); 
+      navigate(`/search/${search}`);
+    } else {
+      navigate(`/search/${search}`);
+    }
+    setNavToggle(false);
   }
+
+  useEffect(() => {
+    setIsOnSearchPage(location.pathname.startsWith('/search'));
+  }, [location]);
+
 
   return (
     <header className="header">

@@ -1,7 +1,7 @@
 import styles from "./CommonPageLayout.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import { Navbar, NewsCard } from "../components";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { fetchNews } from "../store/actions";
 import { NEWS_REDUCER_CASES } from "../store/reducers";
 import { useParams } from "react-router-dom";
@@ -15,17 +15,12 @@ function SearchPage() {
 
   const { q } = useParams()
 
-  useEffect(() => {
-    dispatch(fetchNews({
-        q: q,
-    }));
-  }, [dispatch]);
+  const [headerTitle, setHeaderTitle] = useState("")
   
   function capitalizeWords(str) {
     return str.replace(/\b\w/g, (char) => char.toUpperCase());
   }
   
-
   const handleToggleSave = (n) => {
       n.buttonName = capitalizeWords(q)
     const isSaved = savedNewsReducer.some((saved) => saved._id === n._id);
@@ -46,13 +41,23 @@ function SearchPage() {
     }
   };
 
+  const performSearch = (searchQuery) => {
+    setHeaderTitle(searchQuery)
+    dispatch(fetchNews({ q: searchQuery }));
+  };
+  
+  useEffect(() => {
+    if (q) {
+      performSearch(q);
+    }
+  }, [q]); 
 
   return (
     <main>
-      <Navbar />
+      <Navbar performSearch={performSearch}  />
       <section className={styles.pageContainer}>
         <section>
-          <h1 className={styles.h1Container}>{ capitalizeWords(q) } News</h1>
+          <h1 className={styles.h1Container}>{ headerTitle? capitalizeWords(headerTitle) : capitalizeWords(q) } News</h1>
         </section>
         <section className={styles.newsContainer}>
           {newsReducer.map((n, i) => {
@@ -65,7 +70,7 @@ function SearchPage() {
                 abstract={abstract}
                 source={source}
                 author={byline?.original || "Unknown Author"}
-                buttonName={capitalizeWords(q)}
+                buttonName={headerTitle? capitalizeWords(headerTitle) : capitalizeWords(q)}
                 btnSaveUnsaveV2={isSaved ? 'Un-Save' : 'Save'}
                 isSaved={isSaved}
                 onToggleSave={() => handleToggleSave(n)}
